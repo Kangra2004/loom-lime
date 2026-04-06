@@ -1,0 +1,290 @@
+.profile-page {
+  padding: 140px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-card {
+  width: 700px;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Avatar */
+.avatar-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ff3f6c;
+  transition: 0.3s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Header */
+.profile-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-header input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Buttons */
+.profile-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.profile-buttons button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.edit-btn {
+  background: #111;
+  color: white;
+}
+
+.save-btn {
+  background: #ff3f6c;
+  color: white;
+}
+
+.logout-btn {
+  background: #333;
+  color: white;
+}
+
+.theme-btn {
+  background: #eee;
+}
+
+/* Address */
+.address-section {
+  margin-bottom: 30px;
+}
+
+.address-card {
+  display: flex;
+  justify-content: space-between;
+  background: #f7f7f7;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.address-card button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+/* Orders */
+.order-card {
+  display: flex;
+  justify-content: space-between;
+  background: #fafafa;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.status.delivered {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.shipped {
+  background: #fff3cd;
+  color: #856404;
+}
+
+/* DARK MODE */
+.dark-mode {
+  background: #111;
+  color: white;
+}
+
+.dark-mode .profile-card {
+  background: #1e1e1e;
+}
+
+.dark-mode .address-card,
+.dark-mode .order-card {
+  background: #2a2a2a;
+}
+.orders-section {
+  margin-top: 50px;
+}
+
+.order-card {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 14px;
+  margin-top: 15px;
+  transition: 0.3s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.order-id {
+  font-weight: 600;
+}
+
+.order-items-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.order-items-preview img {
+  width: 45px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.more-items {
+  background: black;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.order-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status.processing {
+  background: #ffeeba;
+  color: #856404;
+}
+
+.status.paid {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.status.delivered {
+  background: #d4edda;
+  color: #155724;
+}
+.admin-btn {
+  background: #c9a24d;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.admin-btn:hover {
+  background: #a67c00;
+  transform: translateY(-2px);
+}
+/* AVATAR SECTION */
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Avatar Image */
+
+.avatar-section img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #f3f3f3;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect */
+
+.avatar-section img:hover {
+  transform: scale(1.05);
+}
+
+/* File input */
+
+.avatar-section input {
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+/* Optional upload button style */
+
+.avatar-section input::file-selector-button {
+  background: black;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-right: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.avatar-section input::file-selector-button:hover {
+  background: #333;
+}

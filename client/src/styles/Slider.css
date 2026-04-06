@@ -1,0 +1,19 @@
+.slider-section {
+  padding: 40px 10%;
+  overflow: hidden;
+}
+
+.slider-section h2 {
+  margin-bottom: 20px;
+}
+
+.slider-container {
+  display: flex;
+  gap: 20px;
+  cursor: grab;
+  overflow: hidden;
+}
+
+.slider-item {
+  min-width: 260px;
+}

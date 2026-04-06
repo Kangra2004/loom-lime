@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --dark-bg: #111111;
+  --dark-soft: #1a1a1a;
+  --light-bg: #f5f2ec;
+  --champagne: #d4af37;
+  --champagne-soft: #c6a437;
+  --text-dark: #1a1a1a;
+  --text-light: #f5f5f5;
+  --muted: #888;
+}
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;   /* Prevent horizontal scroll */
+  font-family: 'Poppins', sans-serif;
+   width: 100%;
+}
+
+body {
+  background-color: #f8f6f2;
+  color: var(--text-light);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  cursor: default; /* for luxury cursor */
+
+
+
+}
+
+/* HEADINGS */
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 1px;
+}
+
+/* PREMIUM BUTTON */
+button {
+  padding: 12px 28px;
+  border-radius: 40px;
+  border: none;
+  background: linear-gradient(135deg, var(--champagne), var(--champagne-soft));
+  color: #000;
+  font-weight: 600;
+  transition: all 0.4s ease;
+}
+
+button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(212,175,55,0.35);
+}
+
+/* PAGE TRANSITION WRAPPER */
+.page-wrapper {
+  min-height: 80vh;
+  animation: fadeInPage 0.6s ease;
+}
+
+@keyframes fadeInPage {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PREMIUM SPINNER */
+.luxury-spinner {
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(212,175,55,0.2);
+  border-top: 3px solid var(--champagne);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 100px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.luxury-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, var(--champagne), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  z-index: 9999;
+}
+.container {
+  width: 100%;
+  padding: 0 15px;
+  margin: 0;
+}
+
+section {
+   padding: 80px 0;
+}
+/* App Layout */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main Content takes remaining space */
+.main-content {
+  flex: 1;
+   width: 100%;
+  background: #fff;
+    padding-top: 90px;   /* adjust navbar height */
+}
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 110px;  /* more space for mobile navbar */
+  }
+
+
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .container {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .product-grid {
+    width: 100%;
+  }
+
+}

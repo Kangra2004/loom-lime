@@ -1,0 +1,287 @@
+/* ================= INTRO SCREEN ================= */
+body {
+  margin: 0;
+  padding: 0;
+}
+.intro-screen {
+  height: 100vh;
+  background: radial-gradient(circle at top, var(--navy), var(--black));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.intro-logo {
+  width: 190px;
+  margin-bottom: 16px;
+}
+
+.intro-screen p {
+  color: var(--gold);
+  letter-spacing: 1.2px;
+  font-size: 0.95rem;
+}
+/* HERO */
+.hero {
+  width: 100%;
+  height: 80vh;
+  position: relative;
+  overflow: hidden;
+  border-bottom: none;   /* remove line */
+}
+
+.hero-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Keep cover for premium look */
+  object-position: center top; /* 👈 Prevent face cutting */
+}
+
+/* Dark overlay */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+/* Button container */
+.hero-content {
+  position: absolute;
+  bottom: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+/* Explore Button */
+.hero-btn {
+  position: relative;
+  padding: 14px 42px;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  border: 2px solid white;
+  color: white;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+/* glow effect */
+
+.hero-btn:hover {
+  background: white;
+  color: black;
+  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+}
+
+/* ripple layer */
+
+.hero-btn::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+  background: rgba(255,255,255,0.35);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+/* ripple expand */
+
+.hero-btn:active::after {
+  width: 260px;
+  height: 260px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hero {
+    height: 80vh;
+  }
+
+  .hero-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+/* HOME PRODUCTS SECTION */
+.home-products {
+  
+  text-align: center;
+}
+
+/* Title */
+.home-products h2 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+
+/* Subtitle */
+.section-subtitle {
+  font-size: 1rem;
+  margin-bottom: 50px;   /* 👈 more spacing */
+  color: #666;
+}
+
+/* MOBILE */
+@media (max-width: 768px) { 
+  .home-products {
+    padding: 60px 5% 50px;
+  }
+
+  .home-products h2 {
+    font-size: 1.8rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 40px;   /* 👈 adjust spacing */
+  }
+}
+.category-showcase {
+  padding: 50px 8%;
+  background: #fff;
+  margin-top: -2px;   /* removes tiny gap line */
+}
+
+.category-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 80px;
+  gap: 50px;
+}
+
+.category-row img {
+  width: 50%;
+  height: 420px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+}
+
+.category-row img:hover {
+  transform: scale(1.05);
+}
+
+.category-text {
+  width: 40%;
+}
+
+.category-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.category-text p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Reverse Layout */
+.reverse {
+  flex-direction: row-reverse;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .category-row {
+    flex-direction: column;
+  }
+
+  .reverse {
+    flex-direction: column;
+  }
+
+  .category-row img,
+  .category-text {
+    width: 100%;
+  }
+}
+
+/* CATEGORY TABS */
+
+.category-tabs{
+display:flex;
+justify-content:center;
+gap:14px;
+flex-wrap:wrap;
+margin-bottom:35px;
+}
+
+.tab-btn{
+padding:10px 18px;
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:0.9rem;
+letter-spacing:1px;
+color:#555;
+transition:all .3s ease;
+position:relative;   /* add this */
+}
+
+.tab-btn:hover{
+background:#000;
+color:#fff;
+}
+
+.tab-btn.active{
+background:#000;
+color:#fff;
+}
+/* CATEGORY TABS */
+
+.category-tabs{
+display:flex;
+justify-content:center;
+gap:16px;
+flex-wrap:wrap;
+margin-bottom:35px;
+}
+
+.tab-btn{
+padding:10px 18px;
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:0.9rem;
+letter-spacing:1px;
+color:#555;
+transition:all .3s ease;
+}
+
+.tab-btn:hover{
+background:black;
+color:white;
+}
+
+.tab-btn.active{
+background:black;
+color:white;
+font-weight:600;
+}
+/* Zara style underline */
+
+.tab-btn::after{
+content:"";
+position:absolute;
+bottom:-5px;
+left:0;
+width:0;
+height:2px;
+background:black;
+transition:width .3s ease;
+}
+
+.tab-btn.active::after{
+width:100%;
+}
+
