@@ -1,3 +1,3 @@
 export const API = window.location.hostname === "localhost"
-  ? "http://localhost:5000"
+  ? "https://loom-lime-backend.onrender.com"
   : `http://${window.location.hostname}:5000`;
