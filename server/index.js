@@ -20,7 +20,7 @@ import { fileURLToPath } from "url";
 
 const app = express();
 
-// ✅ fix dirname for ES modules
+// dirname fix
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -43,18 +43,19 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/cart", cartRoutes);
-app.use("/api/categories", categoryRoutes); // ✅ only once
+app.use("/api/categories", categoryRoutes);
 
-// static folder
+// static
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// DB
+// ✅ DB CONNECTION (FIXED)
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("Mongo Error:", err));
 
 // server
-app.listen(5000,"0.0.0.0", () => {
-  console.log("Server running on port 5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
 });
