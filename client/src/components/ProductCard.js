@@ -57,9 +57,11 @@ navigate("/login", { state: { from: location.pathname } });
       {/* IMAGE */}
       <img
  src={
-  product.image?.startsWith("http")
-    ? product.image
-    : `${API}${product.image}`
+  product.image
+    ? product.image.startsWith("http")
+      ? product.image
+      : `${API}${product.image}`
+    : "/images/placeholder.jpg"
 }
   alt={product.name}
   loading="lazy"
