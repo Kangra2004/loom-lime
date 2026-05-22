@@ -1,7 +1,7 @@
 import express from "express";
 import Order from "../models/Order.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
-import sendEmail from "../utils/sendEmail.js";
+
 import PDFDocument from "pdfkit";
 
 const router = express.Router();
@@ -21,21 +21,9 @@ router.post("/", protect, async (req, res) => {
 
     const createdOrder = await order.save();
 
-    /* ✅ SEND EMAIL */
+    
 
-    await sendEmail(
-      req.user.email,
-      "Order Confirmation",
-      `Your order of ₹${createdOrder.totalPrice} has been placed successfully!\n\nOrder ID: ${createdOrder._id}`
-    );
-
-    res.status(201).json(createdOrder);
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Order creation failed" });
-  }
-});
+    
 
 /* ================= USER ORDERS ================= */
 
