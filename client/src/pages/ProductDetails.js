@@ -195,11 +195,13 @@ const ProductDetails = () => {
 
         <div className="main-image">
           <img
-            src={
-              images[selectedImage]?.startsWith("http")
-                ? images[selectedImage]
-                : `${API}${images[selectedImage]}`
-            }
+           src={
+  images[selectedImage]
+    ? images[selectedImage].startsWith("http")
+      ? images[selectedImage]
+      : `${API}${images[selectedImage]}`
+    : "/images/placeholder.jpg"
+}
             alt={product.name}
           />
         </div>
