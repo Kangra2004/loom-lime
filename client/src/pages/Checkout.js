@@ -304,14 +304,25 @@ await axios.post(
           </label>
 
           <button
-            onClick={
-              formData.paymentMethod === "cod"
-                ? handlePlaceOrder
-                : handleOnlinePayment
-            }
-          >
-            Place Order
-          </button>
+  className="luxury-payment-btn"
+  onClick={
+    formData.paymentMethod === "cod"
+      ? handlePlaceOrder
+      : handleOnlinePayment
+  }
+>
+  <span className="btn-glow"></span>
+
+  {formData.paymentMethod === "online" ? (
+    <>
+      🔒 Pay Securely with Razorpay
+    </>
+  ) : (
+    <>
+      ✨ Place Luxury Order
+    </>
+  )}
+</button>
 
         </div>
       </div>
