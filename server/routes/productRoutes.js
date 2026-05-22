@@ -8,6 +8,7 @@ import { searchProducts } from "../controllers/productController.js";
 const router = express.Router();
 
 /* GET ALL PRODUCTS */
+/* GET ALL PRODUCTS */
 router.get("/", async (req, res) => {
 
   const { category } = req.query;
@@ -20,7 +21,20 @@ router.get("/", async (req, res) => {
 
   const products = await Product.find(query);
 
-  res.json(products);
+  const fixedProducts = products.map((product) => {
+
+    const obj = product.toObject();
+
+    if (
+      !Array.isArray(obj.sizes)
+    ) {
+      obj.sizes = ["S", "M", "L", "XL"];
+    }
+
+    return obj;
+  });
+
+  res.json(fixedProducts);
 
 });
 
@@ -184,6 +198,9 @@ router.get("/:id", async (req, res) => {
 
   const paginatedReviews = product.reviews
     .slice((page - 1) * limit, page * limit);
+  if (!Array.isArray(product.sizes)) {
+  product.sizes = ["S", "M", "L", "XL"];
+}
 
   res.json({
     ...product._doc,
