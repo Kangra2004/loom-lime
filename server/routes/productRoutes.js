@@ -21,21 +21,25 @@ router.get("/", async (req, res) => {
 
   const products = await Product.find(query);
 
-  const fixedProducts = products.map((product) => {
+ const fixedProducts = products.map((product) => {
 
-    const obj = product.toObject();
+  const obj = product.toObject();
 
-    if (
-      !Array.isArray(obj.sizes)
-    ) {
-      obj.sizes = ["S", "M", "L", "XL"];
-    }
+  if (
+    !Array.isArray(obj.sizes)
+  ) {
+    obj.sizes = ["S", "M", "L", "XL"];
+  }
 
-    return obj;
-  });
+  if (!obj.image) {
+    obj.image = "/images/placeholder.jpg";
+  }
 
-  res.json(fixedProducts);
+  if (!Array.isArray(obj.images)) {
+    obj.images = [];
+  }
 
+  return obj;
 });
 
 
