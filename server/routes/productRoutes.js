@@ -220,19 +220,7 @@ router.get("/:id", async (req, res) => {
   });
 });
 
-router.post("/", async (req, res) => {
-  const { name, price, category, sizes } = req.body;
 
-  const product = new Product({
-    name,
-    price,
-    category,
-    sizes, // ✅ important
-  });
-
-  await product.save();
-  res.json(product);
-});
 
 router.get("/search", searchProducts);
 
