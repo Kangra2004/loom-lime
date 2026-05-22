@@ -54,9 +54,9 @@ const ProductSchema = new mongoose.Schema(
       enum: [ "shirts", "t-shirts", "hoodies", "jacket", "sweatshirts", "jeans", "cargos", "joggers", "shorts", "formal", "casual", "combo" ],
       required: true,
     },
-    sizes: {
-  size: String,     // S, M, L
-      stock: Number 
+   sizes: {
+  type: [String],
+  default: ["S", "M", "L", "XL"]
 },
  isCombo: {
     type: Boolean,
