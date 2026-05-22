@@ -14,7 +14,11 @@ const ProductDetails = () => {
   const { addToCart } = useCart();
   const { user } = useAuth();
 
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState({
+  images: [],
+  reviews: [],
+  sizes: [],
+});
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [rating, setRating] = useState(0);
@@ -32,7 +36,8 @@ const ProductDetails = () => {
     fetchProduct();
   }, [id]);
 
-  if (!product) return <div className="luxury-spinner"></div>;
+ if (!product._id)
+  return <div className="luxury-spinner"></div>;
 
   /* ADD TO CART */
   const handleAddToCart = async () => {
@@ -102,10 +107,10 @@ const sortedReviews = [...reviews].sort((a, b) => {
 });
 
   const average =
-    product.reviews.length > 0
+    reviews.length > 0
       ? (
-          product.reviews.reduce((acc, item) => acc + item.rating, 0) /
-          product.reviews.length
+          reviews.reduce((acc, item) => acc + item.rating, 0) /
+          reviews.length
         ).toFixed(1)
       : 0;
 
@@ -118,7 +123,11 @@ const sortedReviews = [...reviews].sort((a, b) => {
           {product.images?.map((img, index) => (
             <img
               key={index}
-              src={`${API}${product.images[selectedImage]}`}
+              src=src={
+  img.startsWith("http")
+    ? img
+    : `${API}${img}`
+}
               alt="thumb"
               className={selectedImage === index ? "active-thumb" : ""}
               onClick={() => setSelectedImage(index)}
