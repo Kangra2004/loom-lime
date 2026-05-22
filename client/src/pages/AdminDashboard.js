@@ -344,10 +344,16 @@ const addCategory = async () => {
 
           <div key={product._id} className="admin-product-card">
 
-            <img
-              src={`${API}${product.image}`}
-              alt={product.name}
-            />
+           <img
+  src={
+    product.image
+      ? product.image.startsWith("http")
+        ? product.image
+        : `${API}${product.image}`
+      : "/images/placeholder.jpg"
+  }
+  alt={product.name}
+/>
 
             <h4>{product.name}</h4>
             <p>₹{product.price}</p>
