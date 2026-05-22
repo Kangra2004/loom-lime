@@ -91,11 +91,15 @@ toast.success("Added to cart");
   };
 
   /* SORT */
-  const sortedReviews = [...product.reviews].sort((a, b) => {
-    if (sortType === "highest") return b.rating - a.rating;
-    if (sortType === "lowest") return a.rating - b.rating;
-    return new Date(b.createdAt) - new Date(a.createdAt);
-  });
+ const reviews = Array.isArray(product?.reviews)
+  ? product.reviews
+  : [];
+
+const sortedReviews = [...reviews].sort((a, b) => {
+  if (sortType === "highest") return b.rating - a.rating;
+  if (sortType === "lowest") return a.rating - b.rating;
+  return new Date(b.createdAt) - new Date(a.createdAt);
+});
 
   const average =
     product.reviews.length > 0
