@@ -178,10 +178,12 @@ const ProductDetails = () => {
             <img
               key={index}
               src={
-                img.startsWith("http")
-                  ? img
-                  : `${API}${img}`
-              }
+  img
+    ? img.startsWith("http")
+      ? img
+      : `${API}${img}`
+    : "/images/placeholder.jpg"
+}
               alt="thumb"
               className={
                 selectedImage === index
