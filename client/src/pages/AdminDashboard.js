@@ -340,7 +340,9 @@ const addCategory = async () => {
 
       <div className="admin-products">
 
-        {products.map((product) => (
+{products
+  .filter(Boolean)
+  .map((product) => (
 
           <div key={product._id} className="admin-product-card">
 
