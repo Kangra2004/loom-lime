@@ -15,10 +15,11 @@ const ProductDetails = () => {
   const { user } = useAuth();
 
   const [product, setProduct] = useState({
-  images: [],
-  reviews: [],
-  sizes: [],
-});
+    images: [],
+    reviews: [],
+    sizes: [],
+  });
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [rating, setRating] = useState(0);
@@ -28,89 +29,141 @@ const ProductDetails = () => {
   /* FETCH PRODUCT */
   useEffect(() => {
     const fetchProduct = async () => {
-      const res = await axios.get(
-        `${API}/api/products/${id}`
-      );
-      setProduct(res.data);
+      try {
+        const res = await axios.get(`${API}/api/products/${id}`);
+
+        setProduct({
+          ...res.data,
+          images: Array.isArray(res.data.images)
+            ? res.data.images
+            : [],
+          reviews: Array.isArray(res.data.reviews)
+            ? res.data.reviews
+            : [],
+          sizes: Array.isArray(res.data.sizes)
+            ? res.data.sizes
+            : [],
+        });
+      } catch (error) {
+        console.log("Product fetch error:", error);
+      }
     };
+
     fetchProduct();
   }, [id]);
 
- if (!product._id)
-  return <div className="luxury-spinner"></div>;
+  if (!product?._id)
+    return <div className="luxury-spinner"></div>;
+
+  /* SAFE ARRAYS */
+  const reviews = Array.isArray(product.reviews)
+    ? product.reviews
+    : [];
+
+  const images = Array.isArray(product.images)
+    ? product.images
+    : [];
+
+  const sizes = Array.isArray(product.sizes)
+    ? product.sizes
+    : [];
 
   /* ADD TO CART */
   const handleAddToCart = async () => {
     if (!user) return alert("Please login first");
     if (!selectedSize) return alert("Please select size");
 
-await addToCart(product._id);
-toast.success("Added to cart");
+    try {
+      await addToCart(product._id);
+      toast.success("Added to cart");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to add to cart");
+    }
   };
 
   /* SUBMIT REVIEW */
   const submitReview = async () => {
-    if (!rating || !comment)
+    if (!rating || !comment) {
       return alert("Please give rating and comment");
+    }
 
-    await axios.post(
-      `${API}/api/products/${id}/reviews`,
-      { rating, comment },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
+    try {
+      await axios.post(
+        `${API}/api/products/${id}/reviews`,
+        { rating, comment },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-    setRating(0);
-    setComment("");
-    window.location.reload();
+      toast.success("Review submitted");
+
+      setRating(0);
+      setComment("");
+
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      toast.error("Review failed");
+    }
   };
 
   /* DELETE REVIEW */
   const deleteReview = async (reviewId) => {
-    await axios.delete(
-      `${API}/api/products/${id}/reviews/${reviewId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-    window.location.reload();
+    try {
+      await axios.delete(
+        `${API}/api/products/${id}/reviews/${reviewId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /* HELPFUL */
   const markHelpful = async (reviewId) => {
-    await axios.post(
-      `${API}/api/products/${id}/reviews/${reviewId}/helpful`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-    window.location.reload();
+    try {
+      await axios.post(
+        `${API}/api/products/${id}/reviews/${reviewId}/helpful`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  /* SORT */
- const reviews = Array.isArray(product?.reviews)
-  ? product.reviews
-  : [];
+  /* SORT REVIEWS */
+  const sortedReviews = [...reviews].sort((a, b) => {
+    if (sortType === "highest") return b.rating - a.rating;
+    if (sortType === "lowest") return a.rating - b.rating;
 
-const sortedReviews = [...reviews].sort((a, b) => {
-  if (sortType === "highest") return b.rating - a.rating;
-  if (sortType === "lowest") return a.rating - b.rating;
-  return new Date(b.createdAt) - new Date(a.createdAt);
-});
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
 
+  /* AVERAGE */
   const average =
     reviews.length > 0
       ? (
-          reviews.reduce((acc, item) => acc + item.rating, 0) /
-          reviews.length
+          reviews.reduce(
+            (acc, item) => acc + item.rating,
+            0
+          ) / reviews.length
         ).toFixed(1)
       : 0;
 
@@ -119,121 +172,167 @@ const sortedReviews = [...reviews].sort((a, b) => {
 
       {/* LEFT */}
       <div className="product-left">
+
         <div className="thumbnail-column">
-          {product.images?.map((img, index) => (
+          {images.map((img, index) => (
             <img
               key={index}
-              src=src={
-  img.startsWith("http")
-    ? img
-    : `${API}${img}`
-}
+              src={
+                img.startsWith("http")
+                  ? img
+                  : `${API}${img}`
+              }
               alt="thumb"
-              className={selectedImage === index ? "active-thumb" : ""}
+              className={
+                selectedImage === index
+                  ? "active-thumb"
+                  : ""
+              }
               onClick={() => setSelectedImage(index)}
             />
           ))}
         </div>
 
-       <div className="main-image">
-  <img
-   src={
-  product.images[selectedImage]?.startsWith("http")
-    ? product.images[selectedImage]
-    : `${API}${product.images[selectedImage]}`
-}
-    alt={product.name}
-  />
-</div>
+        <div className="main-image">
+          <img
+            src={
+              images[selectedImage]?.startsWith("http")
+                ? images[selectedImage]
+                : `${API}${images[selectedImage]}`
+            }
+            alt={product.name}
+          />
+        </div>
+
       </div>
 
       {/* RIGHT */}
       <div className="product-right">
-        <h2 className="brand">{product.brand || "Loom & Line"}</h2>
+
+        <h2 className="brand">
+          {product.brand || "Loom & Lime"}
+        </h2>
+
         <h1>{product.name}</h1>
 
         <div className="rating-row">
           <StarRating rating={average} />
-          <span>({product.reviews.length} Reviews)</span>
+          <span>({reviews.length} Reviews)</span>
         </div>
 
         <div className="price-section">
-  <h2>₹{product.price}</h2>
 
-  {product.stock <= 3 && product.stock > 0 && (
-    <p className="stock-danger">
-      🔥 Hurry! Only {product.stock} left
-    </p>
-  )}
+          <h2>₹{product.price}</h2>
 
-  {product.stock <= 5 && product.stock > 3 && (
-    <p className="stock-warning">
-      ⚠ Only {product.stock} left in stock
-    </p>
-  )}
+          {product.stock <= 3 &&
+            product.stock > 0 && (
+              <p className="stock-danger">
+                🔥 Hurry! Only {product.stock} left
+              </p>
+            )}
 
-  {product.stock === 0 && (
-    <p className="out-of-stock">Out of Stock</p>
-  )}
-</div>
+          {product.stock <= 5 &&
+            product.stock > 3 && (
+              <p className="stock-warning">
+                ⚠ Only {product.stock} left in stock
+              </p>
+            )}
 
+          {product.stock === 0 && (
+            <p className="out-of-stock">
+              Out of Stock
+            </p>
+          )}
+        </div>
+
+        {/* SIZES */}
         <div className="size-section">
+
           <h4>Select Size</h4>
+
           <div>
-            {product.sizes?.map((size) => (
+            {sizes.map((size) => (
               <span
                 key={size}
                 className={`size-box ${
-                  selectedSize === size ? "active-size" : ""
+                  selectedSize === size
+                    ? "active-size"
+                    : ""
                 }`}
-                onClick={() => setSelectedSize(size)}
+                onClick={() =>
+                  setSelectedSize(size)
+                }
               >
                 {size}
               </span>
             ))}
           </div>
+
         </div>
 
-       <button
-  className="add-to-bag"
-  disabled={!selectedSize || product.stock === 0}
-  onClick={handleAddToCart}
->
-  {product.stock === 0 ? "OUT OF STOCK" : "ADD TO BAG"}
-</button>
+        <button
+          className="add-to-bag"
+          disabled={
+            !selectedSize ||
+            product.stock === 0
+          }
+          onClick={handleAddToCart}
+        >
+          {product.stock === 0
+            ? "OUT OF STOCK"
+            : "ADD TO BAG"}
+        </button>
 
         <div className="product-description">
           <h3>Product Details</h3>
           <p>{product.description}</p>
         </div>
 
-        {/* ===== LUXURY REVIEW SECTION ===== */}
+        {/* REVIEWS */}
         <div className="luxury-review-section">
 
           <div className="luxury-rating-wrapper">
+
             <div className="luxury-rating-summary">
-              <h2>{average} <span>★</span></h2>
-              <p>{product.reviews.length} Reviews</p>
+              <h2>
+                {average} <span>★</span>
+              </h2>
+
+              <p>{reviews.length} Reviews</p>
             </div>
 
             <div className="luxury-breakdown">
-              {[5,4,3,2,1].map((star) => {
-                const count = product.reviews.filter(r => r.rating === star).length;
+
+              {[5, 4, 3, 2, 1].map((star) => {
+
+                const count = reviews.filter(
+                  (r) => r.rating === star
+                ).length;
+
                 const percent =
-                  product.reviews.length > 0
-                    ? (count / product.reviews.length) * 100
+                  reviews.length > 0
+                    ? (count / reviews.length) * 100
                     : 0;
 
                 return (
-                  <div key={star} className="luxury-bar-row">
+                  <div
+                    key={star}
+                    className="luxury-bar-row"
+                  >
+
                     <span>{star}★</span>
+
                     <div className="luxury-bar">
                       <div
                         className="luxury-fill"
-                        style={{ width: `${percent}%` }}
+                        style={{
+                          width: `${percent}%`,
+                        }}
                       />
                     </div>
+
                     <span>{count}</span>
+
                   </div>
                 );
               })}
@@ -242,73 +341,120 @@ const sortedReviews = [...reviews].sort((a, b) => {
 
           {/* SORT */}
           <div className="luxury-sort">
+
             <select
               value={sortType}
-              onChange={(e) => setSortType(e.target.value)}
+              onChange={(e) =>
+                setSortType(e.target.value)
+              }
             >
-              <option value="latest">Latest</option>
-              <option value="highest">Highest Rated</option>
-              <option value="lowest">Lowest Rated</option>
+              <option value="latest">
+                Latest
+              </option>
+
+              <option value="highest">
+                Highest Rated
+              </option>
+
+              <option value="lowest">
+                Lowest Rated
+              </option>
+
             </select>
           </div>
 
-          {/* REVIEWS */}
+          {/* REVIEW LIST */}
           {sortedReviews.map((review) => (
-            <div key={review._id} className="luxury-review-card">
+
+            <div
+              key={review._id}
+              className="luxury-review-card"
+            >
 
               <div className="luxury-review-header">
+
                 <div className="luxury-avatar">
-                  {review.name.charAt(0).toUpperCase()}
+                  {review.name
+                    ?.charAt(0)
+                    ?.toUpperCase()}
                 </div>
 
                 <div>
-                  <strong>{review.name}</strong>
+
+                  <strong>
+                    {review.name}
+                  </strong>
+
                   {review.verifiedBuyer && (
                     <span className="luxury-verified">
                       ✔ Verified Buyer
                     </span>
                   )}
+
                 </div>
               </div>
 
               <StarRating rating={review.rating} />
-              <p className="luxury-review-text">{review.comment}</p>
+
+              <p className="luxury-review-text">
+                {review.comment}
+              </p>
 
               <div className="luxury-review-actions">
-                <button onClick={() => markHelpful(review._id)}>
-                  Helpful ({review.helpful})
+
+                <button
+                  onClick={() =>
+                    markHelpful(review._id)
+                  }
+                >
+                  Helpful ({review.helpful || 0})
                 </button>
 
-                {user && user._id === review.user && (
-                  <button
-                    className="luxury-delete"
-                    onClick={() => deleteReview(review._id)}
-                  >
-                    Delete
-                  </button>
-                )}
+                {user &&
+                  user._id === review.user && (
+                    <button
+                      className="luxury-delete"
+                      onClick={() =>
+                        deleteReview(review._id)
+                      }
+                    >
+                      Delete
+                    </button>
+                  )}
+
               </div>
             </div>
           ))}
 
           {/* WRITE REVIEW */}
           {user && (
+
             <div className="luxury-write-review">
+
               <h4>Write a Review</h4>
 
               <div className="luxury-star-input">
-                {[1,2,3,4,5].map((star) => (
+
+                {[1, 2, 3, 4, 5].map((star) => (
+
                   <FaStar
                     key={star}
                     onClick={() => setRating(star)}
-                    className={star <= rating ? "active-star" : ""}
+                    className={
+                      star <= rating
+                        ? "active-star"
+                        : ""
+                    }
                   />
                 ))}
+
               </div>
 
               <textarea
                 value={comment}
-                onChange={(e) => setComment(e.target.value)}
+                onChange={(e) =>
+                  setComment(e.target.value)
+                }
                 placeholder="Share your experience..."
               />
 
@@ -318,8 +464,10 @@ const sortedReviews = [...reviews].sort((a, b) => {
               >
                 Submit Review
               </button>
+
             </div>
           )}
+
         </div>
       </div>
     </div>
