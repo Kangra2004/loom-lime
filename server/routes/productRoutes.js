@@ -56,6 +56,12 @@ router.post(
   .map((file) => file.path)
   .filter(Boolean);
 
+if (imagePaths.length === 0) {
+  return res.status(400).json({
+    message: "Image upload failed",
+  });
+}
+
       const product = new Product({
         name: req.body.name,
         price: req.body.price,
