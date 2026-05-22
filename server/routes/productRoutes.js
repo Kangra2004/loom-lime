@@ -52,9 +52,9 @@ router.post(
         return res.status(400).json({ message: "No image uploaded" });
       }
 
-      const imagePaths = req.files.map(
-        (file) => `/uploads/${file.filename}`
-      );
+     const imagePaths = req.files.map(
+  (file) => file.path
+);
 
       const product = new Product({
         name: req.body.name,
